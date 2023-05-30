@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ds-example
+  labels:
+    app: ds-example
+    type: front-end
+spec:
+  selector:
+    matchLabels:
+      app: daemonset
+      type: front-end
+  template:
+    metadata:
+      labels:
+        app: daemonset
+        type: front-end
+    spec:
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
+      containers:
+      - name: busybox
+        image: busybox
+        command: ['sh', '-c', 'echo Hello Kubernetes! && sleep 3600']
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: workdir
+          mountPath: /workdir
+      volumes:
+      - name: workdir
+        emptyDir: {}
