@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-nginx
+spec:
+  type: ClusterIP # default value
+  ports:
+  - port: 80 # port on the service
+    targetPort: 8080 # port on the pod
+  selector:
+    app: nginx-v2  # Change the pod name here
+
+# Port forward to access the service
+#  kubectl port-forward service/svc-nginx 8080:80  
