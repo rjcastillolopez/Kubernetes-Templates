@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-web-server-proxy
+spec:
+  type: LoadBalancer
+  selector:
+    app: simple-web-server-proxy
+  ports:
+  - port: 5001
+    targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-web-server-proxy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: simple-web-server-proxy
+  template:
+    metadata:
+      labels:
+        app: simple-web-server-proxy
+    spec:
+      containers:
+      - name: simple-web-server-proxy
+        image: rcastillolopez/simple-web-server-proxy:v1
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 3000
