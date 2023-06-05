@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-web-server
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: simple-web-server
+  template:
+    metadata:
+      labels:
+        app: simple-web-server
+    spec:
+      containers:
+      - name: simple-web-server
+        image: rcastillolopez/simple-web-server:v1
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 3000

@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "kubernetes://schema/apps/v1%40deployment": "file:///c%3A/Users/Dev02/Desktop/simple-server/2-node-proxy.yaml"
+    }
+}
