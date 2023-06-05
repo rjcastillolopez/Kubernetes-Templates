@@ -1,0 +1,159 @@
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2023-06-01T17:47:12Z"
+  generateName: metrics-server-55c774cdbb-
+  labels:
+    k8s-app: metrics-server
+    pod-template-hash: 55c774cdbb
+  name: metrics-server-55c774cdbb-f8gsr
+  namespace: kube-system
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: metrics-server-55c774cdbb
+    uid: 5ed304fb-f707-4dbe-818e-7f3805fbe1f0
+  resourceVersion: "322751"
+  uid: 10590d4a-9b30-48e9-a931-04b5590754cb
+spec:
+  containers:
+  - args:
+    - --cert-dir=/tmp
+    - --secure-port=4443
+    - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+    - --kubelet-use-node-status-port
+    - --metric-resolution=15s
+    image: registry.k8s.io/metrics-server/metrics-server:v0.6.3
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /livez
+        port: https
+        scheme: HTTPS
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    name: metrics-server
+    ports:
+    - containerPort: 4443
+      name: https
+      protocol: TCP
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /readyz
+        port: https
+        scheme: HTTPS
+      initialDelaySeconds: 20
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 1000
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /tmp
+      name: tmp-dir
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-tbsnz
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: docker-desktop
+  nodeSelector:
+    kubernetes.io/os: linux
+  preemptionPolicy: PreemptLowerPriority
+  priority: 2000000000
+  priorityClassName: system-cluster-critical
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: metrics-server
+  serviceAccountName: metrics-server
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - emptyDir: {}
+    name: tmp-dir
+  - name: kube-api-access-tbsnz
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2023-06-01T17:47:12Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2023-06-01T17:47:12Z"
+    message: 'containers with unready status: [metrics-server]'
+    reason: ContainersNotReady
+    status: "False"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2023-06-01T17:47:12Z"
+    message: 'containers with unready status: [metrics-server]'
+    reason: ContainersNotReady
+    status: "False"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2023-06-01T17:47:12Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://a3e2f39ae6ce71a6e8da85e2ad2a561a066631053abee2c78bfef00ad0c37ff3
+    image: registry.k8s.io/metrics-server/metrics-server:v0.6.3
+    imageID: docker-pullable://registry.k8s.io/metrics-server/metrics-server@sha256:c60778fa1c44d0c5a0c4530ebe83f9243ee6fc02f4c3dc59226c201931350b10
+    lastState: {}
+    name: metrics-server
+    ready: false
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2023-06-01T17:47:23Z"
+  hostIP: 192.168.65.4
+  phase: Running
+  podIP: 10.1.0.75
+  podIPs:
+  - ip: 10.1.0.75
+  qosClass: Burstable
+  startTime: "2023-06-01T17:47:12Z"
